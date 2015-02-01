@@ -21,6 +21,10 @@ function config($routeProvider) {
 			resolve: {
 				playersRef: function(gameService) {
 					return gameService.players();
+				},
+
+				gameBoard: function(gameService) {
+					return gameService.gameBoard();
 				}
 			}
 		})

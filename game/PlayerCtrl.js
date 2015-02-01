@@ -17,11 +17,11 @@ function PlayerCtrl(playersRef, gameService, $location) {
 		//console.log(vm.players.length);
 
 		vm.players.$add({
-			id: 'p1',
+			id: 'X',
 			name: p1Name
 		});
 		vm.players.$add({
-			id: 'p2',
+			id: 'O',
 			name: p2Name
 		});
 

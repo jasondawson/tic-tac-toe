@@ -50,11 +50,29 @@ body, html {
 	width: 140px;
 	height: 140px;
 	padding: 5px;
-	margin-bottom: 15px;
+	margin-right: 15px;
+	font-style: sans-serif;
+	font-size: 120px;
+	line-height: 140px;
+	text-align: center;
 }
 
 .tile:hover {
 	background: #eee;
+}
+
+.message {
+	z-index: 1;
+	position: fixed;
+	left: 20%;
+	top: 20%;
+	font-style: sans-serif;
+	font-size: 90px;
+	border: 2px solid black;
+	border-radius: 5px;
+	background: #fff;
+	padding: 5px;
+
 }
 
 input.ng-invalid.ng-dirty {
