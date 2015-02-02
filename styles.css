@@ -67,7 +67,45 @@ body {
 }
 
 /* header styles */
+.header-wrapper {
+	width: 100%;
+	background-color: #3b5998;
+	color: #f7f7f7;
+	height: 70px;
+}
 
+	header {
+		width: 80%;
+		margin: 0 auto 10px auto;
+	}
+
+		.site-name {
+			width: 30%;
+			float: left;
+			padding: 15px 0 5px 0px;
+		}
+			.site-name a {
+				color: #f7f7f7;
+				font-size: 2.6rem;
+			}
+
+		.site-menu {
+			width: 70%;
+			float: left;
+			padding: 5px 0 5px 0px;
+		}
+
+		.site-menu ul {
+			float: right;
+		}
+
+		.site-menu a {
+			color: #f7f7f7;
+		}
+
+		.site-menu ul.nav a:hover {
+			background-color: #8b9dc3;
+		}
 
 /* home styles */
 

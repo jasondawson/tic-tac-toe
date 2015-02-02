@@ -7,7 +7,15 @@
 </head>
 <body>
 	<!-- TODO add header that shows if logged in -->
-	<div ng-include="/game/header.html">stuff</div>
+	<div class="header-wrapper">
+	<header class="main-header" ng-controller="HeaderCtrl">
+		<div class="title">Tic Tac Toe</div>
+			<div class="user-stats" >
+				{{test}}
+			</div>
+		</div>
+	</header>
+	</div>
 <div>
 <ng-view></ng-view>
 <div>
