@@ -4,13 +4,16 @@ angular
 
 function config($routeProvider) {
 	$routeProvider
-		.when('/', {
+		.when('/localMP', {
 			templateUrl: 'game/players.html',
 			controller: 'PlayerCtrl',
 			controllerAs: 'vm',
 			resolve: {
 				playersRef: function(gameService) {
 					return gameService.players();
+				},
+				usersRef: function(gameService) {
+					return gameService.getUsers();
 				}
 			}
 		})
@@ -28,6 +31,21 @@ function config($routeProvider) {
 				}
 			}
 		})
-		.otherwise('/');
+		.when('/login', {
+			templateUrl: '/game/login.html',
+			controller: 'LoginCtrl',
+			controllerAs: 'vm',
+			resolve: {
+				usersRef: function(gameService) {
+					return gameService.getUsers();
+				}
+			}
+		})
+		.when('/mainmenu', {
+			templateUrl: 'game/mainmenu.html',
+			controller: 'MainCtrl',
+			controllerAs: 'vm'
+		})
+		.otherwise('/login');
 
 }

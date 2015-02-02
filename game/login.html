@@ -1,0 +1,52 @@
+<div class='login-signup-wrapper'>
+	<h2>Tic-Tac-Toe Login</h2>
+	<div class='login-signup-menu'>
+		<ul>
+			<li ng-click="vm.loginShow = true; vm.registerShow = false" ng-class="vm.loginShow ? 'active' : '' ">Login</li>
+			<li ng-click="vm.loginShow = false; vm.registerShow = true" ng-class="vm.registerShow ? 'active' : '' ">Register</li>
+		</ul>
+	</div>
+	<div class='forms-container'>
+		
+		<!-- Login Form -->
+		<div class='login-signup-form' ng-show="vm.loginShow">
+			<!-- LOGIN FORM CODE GOES HERE -->
+			<form role="form" name="loginForm">
+			<div class="form-group" show-errors>
+    			<label for="loginEmail">Email</label>
+    			<input type="email" class="form-control" id="loginEmail" name="email" placeholder="Enter Email..." ng-model="vm.loginEmail" required>
+    			<p class="help-block" ng-if="loginForm.email.$error.required && loginForm.email.$dirty">Email is required.</p>
+  			</div>
+  			<div class="form-group" show-errors>
+    			<label for="password">Password</label>
+    			<input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" ng-model="vm.loginPassword" required>
+    			<p class="help-block" ng-if="loginForm.password.$error.required && loginForm.password.$dirty">The password is required.</p>
+  			</div>
+			<button type="submit" class="btn btn-default" ng-disabled="loginForm.$invalid" ng-click=
+		"vm.login()">Login</button>
+			</form>
+			</div>
+	<!-- Signup Form -->
+		<div class='login-signup-form' ng-show="vm.registerShow">
+			<!-- LOGIN FORM CODE GOES HERE -->
+			<form role="form" name="registerForm">
+			<div class="form-group" show-errors>
+    			<label for="registerEmail">Email</label>
+    			<input type="email" class="form-control" id="registerEmail" name="email" placeholder="Enter Email..." ng-model="vm.registerEmail" required>
+    			<p class="help-block" ng-if="registerForm.email.$error.required && registerForm.email.$dirty">Email is required.</p>
+  			</div>
+  			<div class="form-group" show-errors>
+    			<label for="registerPassword">Password</label>
+    			<input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password" ng-model="vm.registerPassword" required>
+    			<p class="help-block" ng-if="registerForm.password.$error.required && registerForm.password.$dirty">The password is required.</p>
+  			</div>
+			<button type="submit" class="btn btn-default" ng-disabled="registerForm.$invalid" ng-click=
+		"vm.register()">Register</button>
+			<p class="form-group errMsg" ng-if="vm.errMsg">
+				{{vm.errMsg}}
+			</p>
+			</form>
+		
+		</div>
+	</div>
+</div>
