@@ -62,19 +62,35 @@ body {
   width: 100%;
 }
 
+.pull-left {
+	float: left;
+	display: inline-block;
+}
+
+.pull-right {
+	float: right;
+	display: inline-block;
+}
+
 .clear {
   clear: both;
 }
 
 /* header styles */
 .header-wrapper {
+
 	width: 100%;
 	background-color: #3b5998;
 	color: #f7f7f7;
 	height: 70px;
 }
 
+.main-header {
+	line-height: 70px;
+}
+
 	header {
+
 		width: 80%;
 		margin: 0 auto 10px auto;
 	}
@@ -105,6 +121,30 @@ body {
 
 		.site-menu ul.nav a:hover {
 			background-color: #8b9dc3;
+		}
+
+		.title {
+			font-size: 2rem;
+		}
+
+		.stats {
+			width 70%;
+			margin-left: 10px;
+		}
+
+		.btn-logout {
+			margin-top: 15px;
+			margin-left: 15px;
+			height: 40px;
+		}
+
+		.flex {
+			display: flex;
+		}
+
+		.flex-between {
+			display: flex;
+			justify-content: space-between;
 		}
 
 /* home styles */

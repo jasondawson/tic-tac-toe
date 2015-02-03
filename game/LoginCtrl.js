@@ -12,18 +12,26 @@ function LoginCtrl ($scope, gameService, $location) {
 	vm.loginPassword = '';
 	vm.registerEmail = '';
 	vm.registerPassword = '';
+	vm.registerName = '';
 	vm.errMsg = '';
 
 	vm.login = function() {
 		gameService.loginUser(vm.loginEmail, vm.loginPassword).then(function(res) {
-			if (res === 'Success') {
+			//gameService.setUser(res);
+			//console.log(res + 'logged in');
+			$location.path('/menu');
+
+		}, function(err) {
+			console.log(err);
+		})
+		/*	if (res === 'Success') {
 				$location.path('/localMP');
 			}
-		})
+		})*/
 	}
 
 	vm.register = function() {
-		gameService.registerUser(vm.registerEmail, vm.registerPassword).then(function(res) {
+		gameService.registerUser(vm.registerEmail, vm.registerPassword, vm.registerName, vm.setUser).then(function(res) {
 			if (res === null) {
 			vm.registerEmail = '';
 			vm.registerPassword = '';
@@ -36,6 +44,10 @@ function LoginCtrl ($scope, gameService, $location) {
 			vm.errMsg = res;
 		}
 		})
+	}
+
+	vm.setUser = function(id, name) {
+		gameService.setUser(id, name);
 	}
 
 }

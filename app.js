@@ -17,7 +17,7 @@ function config($routeProvider) {
 				}
 			}
 		})
-		.when('/game', {
+		.when('/game/', {
 			templateUrl: 'game/game.html',
 			controller: 'GameCtrl',
 			controllerAs: 'vm',
@@ -31,6 +31,16 @@ function config($routeProvider) {
 				}
 			}
 		})
+		.when('/games/:gameId', {
+			templateUrl: 'game/mpGame.html',
+			controller: 'MpGameCtrl',
+			controllerAs: 'vm',
+			resolve: {
+				mpGameBoard: function(gameService) {
+					return gameService.mpGameBoard();
+				}
+			}
+		})
 		.when('/login', {
 			templateUrl: '/game/login.html',
 			controller: 'LoginCtrl',
@@ -41,11 +51,34 @@ function config($routeProvider) {
 				}
 			}
 		})
-		.when('/mainmenu', {
-			templateUrl: 'game/mainmenu.html',
-			controller: 'MainCtrl',
+		.when('/lobby', {
+			templateUrl: 'game/lobby.html',
+			controller: 'LobbyCtrl',
+			controllerAs: 'vm',
+			resolve: {
+				gamesRef: function(gameService) {
+					return gameService.getGames();
+				}
+			}
+		})
+		.when('/menu',{
+			templateUrl: 'game/menu.html',
+			controller: 'MenuCtrl',
 			controllerAs: 'vm'
 		})
 		.otherwise('/login');
 
 }
+
+
+angular
+	.module('ttt')
+	.run(function($rootScope, $location, gameService) {
+	$rootScope.$on('$routeChangeStart', function(event, next, current) {
+		$rootScope.currentUser = gameService.getCurrentUser();
+			
+		
+		})
+
+	})
+

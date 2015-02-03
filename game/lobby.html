@@ -1,0 +1,10 @@
+<div class="login-signup-wrapper">
+<button class="btn btn-default" ng-click="vm.createGame()">Create Game
+</button>
+<hr>
+<div ng-repeat="game in vm.games">
+{{game.player}}
+<button class="btn btn-default" ng-click="vm.joinGame()">Join Game</button>
+<br>
+</div>
+</div>

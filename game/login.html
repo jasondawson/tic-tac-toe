@@ -36,6 +36,11 @@
     			<p class="help-block" ng-if="registerForm.email.$error.required && registerForm.email.$dirty">Email is required.</p>
   			</div>
   			<div class="form-group" show-errors>
+    			<label for="registerName">Name</label>
+    			<input type="text" class="form-control" id="registerName" name="name" placeholder="Enter Name..." ng-model="vm.registerName" required>
+    			<p class="help-block" ng-if="registerForm.name.$error.required && registerForm.name.$dirty">Name is required.</p>
+  			</div>
+  			<div class="form-group" show-errors>
     			<label for="registerPassword">Password</label>
     			<input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password" ng-model="vm.registerPassword" required>
     			<p class="help-block" ng-if="registerForm.password.$error.required && registerForm.password.$dirty">The password is required.</p>
