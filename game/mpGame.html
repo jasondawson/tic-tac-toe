@@ -1,0 +1,41 @@
+<div>
+
+	<div class="message" ng-show="vm.gameOver">
+		{{vm.gameOver}} wins!
+	</div>
+	<div class="message" ng-show="vm.isTied">
+		Tie!
+	</div>
+
+
+<div class="gameboard gameboard-col">
+	
+	<div class="gameboard-row">
+		<div class="tile" ng-click="vm.playTurn(1)">{{vm.gameboard[1]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(2)">{{vm.gameboard[2]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(3)">{{vm.gameboard[3]}}
+		</div>
+	</div>
+	<div class="gameboard-row">
+		<div class="tile" ng-click="vm.playTurn(4)">{{vm.gameboard[4]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(5)">{{vm.gameboard[5]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(6)">{{vm.gameboard[6]}}
+		</div>
+	</div>
+	<div class="gameboard-row">
+		<div class="tile" ng-click="vm.playTurn(7)">{{vm.gameboard[7]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(8)">{{vm.gameboard[8]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(9)">{{vm.gameboard[9]}}
+		</div>
+	</div>
+	
+</div>
+
+
+</div>

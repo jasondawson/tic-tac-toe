@@ -18,11 +18,17 @@ function PlayerCtrl(playersRef, gameService, $location) {
 
 		vm.players.$add({
 			id: 'X',
-			name: p1Name
+			name: p1Name,
+			wins: 0,
+			losses: 0,
+			ties: 0
 		});
 		vm.players.$add({
 			id: 'O',
-			name: p2Name
+			name: p2Name,
+			wins: 0,
+			losses: 0,
+			ties: 0
 		});
 
 		$location.path('/game');

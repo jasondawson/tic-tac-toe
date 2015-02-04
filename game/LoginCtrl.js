@@ -31,7 +31,7 @@ function LoginCtrl ($scope, gameService, $location) {
 	}
 
 	vm.register = function() {
-		gameService.registerUser(vm.registerEmail, vm.registerPassword, vm.registerName, vm.setUser).then(function(res) {
+		gameService.registerUser(vm.registerEmail, vm.registerPassword, vm.registerName).then(function(res) {
 			if (res === null) {
 			vm.registerEmail = '';
 			vm.registerPassword = '';
@@ -46,8 +46,8 @@ function LoginCtrl ($scope, gameService, $location) {
 		})
 	}
 
-	vm.setUser = function(id, name) {
+	/*vm.setUser = function(id, name) {
 		gameService.setUser(id, name);
-	}
+	}*/
 
 }

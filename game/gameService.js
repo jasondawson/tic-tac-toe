@@ -29,14 +29,14 @@ function gameService($firebase, $q, usersRef) {
 	}
 
 	this.players = function() {
-		return $firebase(new Firebase(firebaseUrl + '/players'))
+		return $firebase(new Firebase(firebaseUrl + '/local/players'))
 	}
 
 	this.gameBoard = function() {
-		return $firebase(new Firebase(firebaseUrl + '/gameBoard'))
+		return $firebase(new Firebase(firebaseUrl + '/local/gameBoard'))
 	}
 
-  this.createGame = function() {
+  this.createGame = function(name) {
       var gameRef = new Firebase(firebaseUrl + '/games');
       //var sync = gameRef.$asArray();
       var userRef = new Firebase(firebaseUrl + '/users')
@@ -46,7 +46,8 @@ function gameService($firebase, $q, usersRef) {
       //console.log(userName);
       //console.log(auth);
       var newGameRef = gameRef.push({
-        status: 'pending'
+        status: 'pending',
+        p1: name
 
       })
       //sync.$save();
@@ -59,7 +60,7 @@ function gameService($firebase, $q, usersRef) {
 		return $firebase(new Firebase(firebaseUrl + '/stats'))
 	}
 
-	this.registerUser = function(email, password, name, cb) {
+	this.registerUser = function(email, password, name) {
 	/*console.log('Register with: Email: ' + vm.loginEmail + ' and password: ' + Boolean(vm.loginPassword) );*/
 	var ref = new Firebase("https://jcd.firebaseio.com/");
 	var dfd = $q.defer();
@@ -69,7 +70,6 @@ function gameService($firebase, $q, usersRef) {
 		password : password
 	}, function(error) {
 			if (error === null) {
-      //TODO authwithPassword & save user to database  
         ref.authWithPassword({
         email: email,
         password: password
@@ -79,11 +79,13 @@ function gameService($firebase, $q, usersRef) {
           dfd.reject(error);
         } else if (authData){
                     authData.name = name;
-                    authData.
+                    authData.wins = 0;
+                    authData.losses = 0;
+                    authData.ties = 0;
                     authData.timestamp = new Date().toISOString();
                     ref.child('ttt').child('users').child(authData.uid.replace('simplelogin:', '')).set(authData);
                     console.log(authData.uid.replace('simplelogin:', '') + ' ' + authData.name);
-                    cb(authData.uid.replace('simplelogin:', ''), authData.name);
+                   /* cb(authData.uid.replace('simplelogin:', ''), authData.name);*/
                   dfd.resolve(null);
                 }
       })

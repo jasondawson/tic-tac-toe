@@ -5,17 +5,24 @@ angular
 
 function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 	var vm = this;
+	vm.gameCount = 0;
 	vm.turns = 0;
 	vm.isP1Turn = true;
 	vm.gameOver = false;
 	vm.isTied = false;
 	vm.gameboard = gameBoard.$asObject();
 	vm.players = playersRef.$asArray();
-	console.log(vm.tie);
-	console.log(vm.gameboard);
-	console.log(vm.players);
 
 	vm.newGame = function() {
+		vm.turns = 0;
+		vm.gameOver = false;
+		vm.isTied = false;
+		if (vm.gameCount % 2 === 0) {
+			vm.isP1Turn = true;
+		} else {
+			vm.isP1Turn = false;
+		}
+
 		for(var i = 1; i < 10; i++) {
 			vm.gameboard[i] = null;
 		};
@@ -44,15 +51,22 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 			if (vm.winCheck()) {
 				console.log(player);
 				if (player === 'X') {
-					console.log(vm.players[0]['name'])
 					vm.gameOver = vm.players[0]['name'];
+					vm.players[0].wins += 1;
+					vm.players[1].losses += 1;
 				} else {
 					vm.gameOver = vm.players[1]['name'];
+					vm.players[1].wins += 1;
+					vm.players[0].losses += 1;
 				}
+				vm.gameCount++;
 			}
 
 			if(vm.tie()) {
 				vm.isTied = true;
+				vm.players[0].ties += 1;
+				vm.players[1].ties += 1;
+				vm.gameCount++;
 			}
 		}
 	}
@@ -80,7 +94,9 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 		return false;
 	}
 
-
+	vm.startOver = function() {
+		vm.newGame();
+	}
 	//start Game
 	vm.newGame();
 
