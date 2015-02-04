@@ -3,7 +3,7 @@ angular
 	.controller('GameCtrl', GameCtrl);
 
 
-function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
+function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 	var vm = this;
 	vm.gameCount = 0;
 	vm.turns = 0;
@@ -27,7 +27,7 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 			vm.gameboard[i] = null;
 		};
 		vm.gameboard.$save();
-		console.log(vm.gameboard);
+		//console.log(vm.gameboard);
 	}
 
 	vm.playTurn = function(num) {
@@ -45,11 +45,11 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 			vm.gameboard.$save();
 			vm.isP1Turn = !vm.isP1Turn;
 			vm.turns++;
-			console.log(vm.turns);
+			//console.log(vm.turns);
 
 			}
 			if (vm.winCheck()) {
-				console.log(player);
+				//console.log(player);
 				if (player === 'X') {
 					vm.gameOver = vm.players[0]['name'];
 					vm.players[0].wins += 1;
@@ -73,9 +73,9 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 
 
 	vm.winCheck = function() {
-		console.log('checking for win');
+		//console.log('checking for win');
 		var a = vm.gameboard;
-		console.log(a);
+		//console.log(a);
 		if ((a[1] === a[2] && a[2] === a[3]) && (a[1])) return true;
 		if ((a[4] === a[5] && a[5] === a[6]) && (a[4])) return true;
 		if ((a[7] === a[8] && a[8] === a[9]) && (a[7])) return true;
@@ -97,6 +97,18 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase) {
 	vm.startOver = function() {
 		vm.newGame();
 	}
+
+	vm.mainMenu = function() {
+
+		removePlayersRef = new Firebase('http://jcd.firebaseio.com/ttt/local/players');
+		//console.log(removePlayersRef);
+		removePlayersRef.remove();
+		
+		vm.gameboard.$destroy();
+
+		$location.path('/menu');
+	}
+
 	//start Game
 	vm.newGame();
 

@@ -36,9 +36,13 @@ function config($routeProvider) {
 			controller: 'MpGameCtrl',
 			controllerAs: 'vm',
 			resolve: {
-				mpGameBoard: function(gameService) {
-					return gameService.mpGameBoard();
+				mpGameRef: function(gameService, $route) {
+					return gameService.getMpGame($route.current.params.gameId);
+				},
+				mpBoardRef: function(gameService, $route) {
+					return gameService.getMpBoard($route.current.params.gameId);
 				}
+	
 			}
 		})
 		.when('/login', {

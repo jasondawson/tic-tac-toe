@@ -2,9 +2,11 @@
 <button class="btn btn-default" ng-click="vm.createGame()">Create Game
 </button>
 <hr>
-<div ng-repeat="game in vm.games">
-{{game.player}}
-<button class="btn btn-default" ng-click="vm.joinGame()">Join Game</button>
-<br>
+<div ng-repeat="game in vm.games | filter:{ status: 'pending'}">
+<button class="btn btn-default pull-left clear" ng-click="vm.joinGame(game.$id)">Join Game</button>
+<div class="pull-right ">
+Opponent: {{game.p1}}
+</div>
+<br class="clear" />
 </div>
 </div>

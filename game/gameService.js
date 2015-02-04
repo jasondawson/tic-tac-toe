@@ -4,7 +4,7 @@ angular
 
 gameService.$inject = ['$firebase', '$q'];
 
-function gameService($firebase, $q, usersRef) {
+function gameService($firebase, $q, usersRef, $rootScope) {
 
    var currentUser = {};
 
@@ -18,10 +18,18 @@ function gameService($firebase, $q, usersRef) {
     return currentUser;
   }
 
-	var firebaseUrl = 'https://jcd.firebaseio.com/ttt'
+	var firebaseUrl = 'https://jcd.firebaseio.com/ttt';
 
   this.getGames = function() {
     return $firebase(new Firebase(firebaseUrl + '/games'))
+  }
+
+  this.getMpGame = function(gameId) {
+    return $firebase(new Firebase('http://jcd.firebaseio.com/ttt/games/' + gameId))
+  }
+
+  this.getMpBoard = function(gameId) {
+    return $firebase(new Firebase('http://jcd.firebaseio.com/ttt/games/' + gameId + '/gameboard'))
   }
 
 	this.getUsers = function() {
@@ -36,25 +44,76 @@ function gameService($firebase, $q, usersRef) {
 		return $firebase(new Firebase(firebaseUrl + '/local/gameBoard'))
 	}
 
+  this.mpGameBoard = function() {
+    return $firebase(new Firebase(firebaseUrl + '/games'))
+  }
+
   this.createGame = function(name) {
       var gameRef = new Firebase(firebaseUrl + '/games');
       //var sync = gameRef.$asArray();
-      var userRef = new Firebase(firebaseUrl + '/users')
-      var auth = gameRef.getAuth().uid.replace('simplelogin:','');
-      console.log(auth);
+     // var userRef = new Firebase(firebaseUrl + '/users')
+    /*  var auth = gameRef.getAuth().uid.replace('simplelogin:','');
+      console.log(auth);*/
       //var userName = userRef.child(auth).child('name').value();
       //console.log(userName);
       //console.log(auth);
+      var p1 = currentUser.name;
       var newGameRef = gameRef.push({
+        me: 'p1Turn',
+        p1Turn: true,
+        p2Turn: false,
         status: 'pending',
-        p1: name
-
+        p1: currentUser.name,
+        p1_wins: currentUser.wins,
+        p1_losses: currentUser.losses,
+        p1_ties: currentUser.ties,
+        p2: 'Waiting for Player'
       })
       //sync.$save();
-      dfd = $q.defer();
+      var dfd = $q.defer();
       dfd.resolve(newGameRef.key());
       return dfd.promise;
   }
+
+    this.joinGame = function(gameId) {
+      var gameRef = new Firebase(firebaseUrl + '/games/' + gameId);
+      //var sync = gameRef.$asArray();
+     // var userRef = new Firebase(firebaseUrl + '/users')
+    /*  var auth = gameRef.getAuth().uid.replace('simplelogin:','');
+      console.log(auth);*/
+      //var userName = userRef.child(auth).child('name').value();
+      //console.log(userName);
+      //console.log(auth);
+      var p2 = currentUser.name;
+      
+      gameRef.update({
+        me: 'p2Turn',
+        status: 'In progress',
+        p2: currentUser.name,
+        p2_wins: currentUser.wins,
+        p2_losses: currentUser.losses,
+        p2_ties: currentUser.ties
+      })
+
+      gameRef.child('gameboard').set({
+          '1': null,
+          '2': null,
+          '3': null,
+          '4': null,
+          '5': null,
+          '6': null,
+          '7': null,
+          '8': null,
+          '9': null
+        })
+      
+      //sync.$save();
+      var dfd = $q.defer();
+      dfd.resolve(gameId);
+      return dfd.promise;
+  }
+
+
 
 	this.stats = function() {
 		return $firebase(new Firebase(firebaseUrl + '/stats'))
@@ -84,7 +143,7 @@ function gameService($firebase, $q, usersRef) {
                     authData.ties = 0;
                     authData.timestamp = new Date().toISOString();
                     ref.child('ttt').child('users').child(authData.uid.replace('simplelogin:', '')).set(authData);
-                    console.log(authData.uid.replace('simplelogin:', '') + ' ' + authData.name);
+                    //console.log(authData.uid.replace('simplelogin:', '') + ' ' + authData.name);
                    /* cb(authData.uid.replace('simplelogin:', ''), authData.name);*/
                   dfd.resolve(null);
                 }
@@ -112,51 +171,29 @@ function gameService($firebase, $q, usersRef) {
            // console.log(authData);
             var usersRef = new Firebase('https://jcd.firebaseio.com/ttt/users');
             var currentId = usersRef.getAuth().uid.replace('simplelogin:','');
-            console.log(currentId);
+            //console.log(currentId);
             var userRef = $firebase(new Firebase('https://jcd.firebaseio.com/ttt/users/' + currentId));
             currentUser = userRef.$asObject();
-            console.log(currentUser);
+            //console.log(currentUser);
             
             /*var userRef = usersRef.child$asArray();
             console.log(userRef);*/
             dfd.resolve(currentUser);  
 
             
-  		/*	console.log(authData);
-  			var userDetailsRef = $firebase(new Firebase(firebaseUrl + '/users'));
-  			var sync = userDetailsRef.$asArray();
-  			sync.$loaded()
-  				.then(function() {
-  					console.log(sync.length);
-  			console.log('1');
-  			console.log(sync)
-  			var userExists = false;
-  			console.log(sync.length);
-  			for (var i = 0; i < sync.length; i++) {
-  				if (sync[i].id === authData.uid) {
-  					userExists = true;
-  					break;
-  				}
-  			}
-
-  			if (!(userExists)) {
-  				console.log(authData.password.email);
-  				sync.$add({
-  					id: authData.uid,
-  					name: authData.password.email,
-  					wins: 0,
-  					losses: 0,
-  					ties: 0
-  				});
-  				sync.$save(); 
-  				console.log(sync);
-  			}
-    	console.log("Authenticated successfully with payload:", authData);
-    	dfd.resolve('Success');
-  				})*/
   		}
 		});
 		return dfd.promise;
 	}
+
+  this.logout = function() {
+    var ref = new Firebase(firebaseUrl);
+    var dfd = $q.defer();
+    
+    ref.unauth();
+    dfd.resolve(null);
+
+    return dfd.promise;
+  }
 
 }

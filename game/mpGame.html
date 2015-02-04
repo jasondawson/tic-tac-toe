@@ -1,41 +1,64 @@
 <div>
 
-	<div class="message" ng-show="vm.gameOver">
+	p1:{{vm.thisGame.p1Turn}}
+	p2:{{vm.thisGame.p2Turn}}
+<div class="gameboard-wrapper">
+<button class="btn btn-default clear" ng-click="vm.startOver()">New Game</button>
+<button class="btn btn-default" ng-click="vm.mainMenu()">Main Menu</button>
+
+<div class="display-wrapper">
+<div class="player-display pull-left">
+Player 1: {{vm.thisGame.p1}}
+<hr>
+<p>Wins: {{vm.thisGame.p1_wins}} Losses: {{vm.thisGame.p1_losses}} Ties: {{vm.thisGame.p1_ties}} </p>
+</div>
+<div class="player-display pull-left clear">
+Player 2: {{vm.thisGame.p2}}
+<hr>
+<p ng-hide="vm.thisGame.status === 'pending'">Wins: {{vm.thisGame.p2_wins}} Losses: {{vm.thisGame.p2_losses}} Ties: {{vm.thisGame.p2_ties}} </p>
+</div>
+<div class="player-display player-display-turns pull-left clear" ng-show="(vm.thisGame[vm.me] && (!vm.gameOver && !vm.isTied)) && vm.thisGame.status !== 'pending'">
+Your Turn!
+</div>
+<!-- <div class="player-display player-display-turns pull-left clear" ng-show="(!vm.isP1Turn && (!vm.gameOver && !vm.isTied)) && vm.thisGame.status !== 'pending'">
+{{vm.thisGame.p2}}'s Turn!
+</div> -->
+<div class="message pull-left clear" ng-show="vm.gameOver">
 		{{vm.gameOver}} wins!
 	</div>
-	<div class="message" ng-show="vm.isTied">
+	<div class="message pull-left clear" ng-show="vm.isTied">
 		Tie!
 	</div>
-
 
 <div class="gameboard gameboard-col">
 	
 	<div class="gameboard-row">
-		<div class="tile" ng-click="vm.playTurn(1)">{{vm.gameboard[1]}}
+		<div class="tile" ng-click="vm.playTurn(1)">{{vm.thisBoard[1]}}
 		</div>
-		<div class="tile" ng-click="vm.playTurn(2)">{{vm.gameboard[2]}}
+		<div class="tile" ng-click="vm.playTurn(2)">{{vm.thisBoard[2]}}
 		</div>
-		<div class="tile" ng-click="vm.playTurn(3)">{{vm.gameboard[3]}}
-		</div>
-	</div>
-	<div class="gameboard-row">
-		<div class="tile" ng-click="vm.playTurn(4)">{{vm.gameboard[4]}}
-		</div>
-		<div class="tile" ng-click="vm.playTurn(5)">{{vm.gameboard[5]}}
-		</div>
-		<div class="tile" ng-click="vm.playTurn(6)">{{vm.gameboard[6]}}
+		<div class="tile" ng-click="vm.playTurn(3)">{{vm.thisBoard[3]}}
 		</div>
 	</div>
 	<div class="gameboard-row">
-		<div class="tile" ng-click="vm.playTurn(7)">{{vm.gameboard[7]}}
+		<div class="tile" ng-click="vm.playTurn(4)">{{vm.thisBoard[4]}}
 		</div>
-		<div class="tile" ng-click="vm.playTurn(8)">{{vm.gameboard[8]}}
+		<div class="tile" ng-click="vm.playTurn(5)">{{vm.thisBoard[5]}}
 		</div>
-		<div class="tile" ng-click="vm.playTurn(9)">{{vm.gameboard[9]}}
+		<div class="tile" ng-click="vm.playTurn(6)">{{vm.thisBoard[6]}}
+		</div>
+	</div>
+	<div class="gameboard-row">
+		<div class="tile" ng-click="vm.playTurn(7)">{{vm.thisBoard[7]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(8)">{{vm.thisBoard[8]}}
+		</div>
+		<div class="tile" ng-click="vm.playTurn(9)">{{vm.thisBoard[9]}}
 		</div>
 	</div>
 	
 </div>
+</div>
 
-
+</div>
 </div>

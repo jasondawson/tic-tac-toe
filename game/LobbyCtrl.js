@@ -7,16 +7,21 @@ function LobbyCtrl($scope, gameService, gamesRef, $location) {
 
 	vm.createGame = function() {
 		gameService.createGame().then(function(res){
-			vm.refreshGames();
+			//vm.refreshGames();
 			$location.path(/games/ + res);
 		});
 	}
 
 	vm.refreshGames = function() {
 		vm.games = vm.sync.$asArray();
+		console.log(vm.games);
 	}
 
-
+	vm.joinGame = function(id) {
+		gameService.joinGame(id).then(function(res) {
+			$location.path(/games/ + res);
+		})
+	}
 
 	vm.sync = gameService.getGames();
 	

@@ -5,4 +5,9 @@ angular
 function HeaderCtrl($scope, $location, gameService, $rootScope) {
 	var vm = this;
 	
+	vm.logout = function() {
+		gameService.logout().then(function() {
+			$location.path('/login');
+		})
+	}
 }
