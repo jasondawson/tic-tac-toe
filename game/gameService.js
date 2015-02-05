@@ -60,6 +60,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
       var p1 = currentUser.name;
       var newGameRef = gameRef.push({
         me: 'p1Turn',
+        mySymbol: 'X',
         p1Turn: true,
         p2Turn: false,
         status: 'pending',
@@ -67,8 +68,23 @@ function gameService($firebase, $q, usersRef, $rootScope) {
         p1_wins: currentUser.wins,
         p1_losses: currentUser.losses,
         p1_ties: currentUser.ties,
-        p2: 'Waiting for Player'
+        p2: 'Waiting for Player',
+        gameOver: false
       })
+
+       newGameRef.child('gameboard').set({
+          '0': 'created',
+          '1': null,
+          '2': null,
+          '3': null,
+          '4': null,
+          '5': null,
+          '6': null,
+          '7': null,
+          '8': null,
+          '9': null
+        })
+
       //sync.$save();
       var dfd = $q.defer();
       dfd.resolve(newGameRef.key());
@@ -88,6 +104,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
       
       gameRef.update({
         me: 'p2Turn',
+        mySymbol: 'O',
         status: 'In progress',
         p2: currentUser.name,
         p2_wins: currentUser.wins,
@@ -95,17 +112,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
         p2_ties: currentUser.ties
       })
 
-      gameRef.child('gameboard').set({
-          '1': null,
-          '2': null,
-          '3': null,
-          '4': null,
-          '5': null,
-          '6': null,
-          '7': null,
-          '8': null,
-          '9': null
-        })
       
       //sync.$save();
       var dfd = $q.defer();
