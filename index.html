@@ -12,10 +12,10 @@
 			<div class="user-stats pull-left" >
 			</div>
 		<div class="stats pull-right flex">
-			<div ng-show="$root.currentUser.name">
+			<div ng-hide="!$root.currentUser.name">
 			Welcome, {{$root.currentUser.name}}!
 			</div> 
-			<button class="btn btn-default btn-logout pull-right" ng-click="vm.logout()">Log Out</button>
+			<button class="btn btn-default btn-logout pull-right" ng-hide="!$root.currentUser.name" ng-click="vm.logout()">Log Out</button>
 		</div>
 	</header>
 	</div>

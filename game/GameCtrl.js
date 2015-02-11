@@ -3,15 +3,18 @@ angular
 	.controller('GameCtrl', GameCtrl);
 
 
-function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
+function GameCtrl(gameService, $firebase, $location, localGameRef) {
 	var vm = this;
 	vm.gameCount = 0;
 	vm.turns = 0;
 	vm.isP1Turn = true;
 	vm.gameOver = false;
 	vm.isTied = false;
-	vm.gameboard = gameBoard.$asObject();
-	vm.players = playersRef.$asArray();
+
+	vm.loadGame = localGameRef.$asObject();
+	vm.loadGame.$loaded().then(function() {
+		vm.thisGame = vm.loadGame;
+	})
 
 	vm.newGame = function() {
 		vm.turns = 0;
@@ -24,9 +27,9 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 		}
 
 		for(var i = 1; i < 10; i++) {
-			vm.gameboard[i] = null;
+			vm.thisGame.gameboard[i] = null;
 		};
-		vm.gameboard.$save();
+		vm.thisGame.$save();
 		//console.log(vm.gameboard);
 	}
 
@@ -35,14 +38,14 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 		/*console.log(num);
 		console.log(vm.gameboard[num]);*/
 		if (!(vm.gameOver)) {
-			if(!(vm.gameboard[num])) {
+			if(!(vm.thisGame.gameboard[num])) {
 				if (vm.isP1Turn) {
 					player = 'X';
 				} else {
 					player = 'O';
 				}
-			vm.gameboard[num] = player;
-			vm.gameboard.$save();
+			vm.thisGame.gameboard[num] = player;
+			vm.thisGame.$save();
 			vm.isP1Turn = !vm.isP1Turn;
 			vm.turns++;
 			//console.log(vm.turns);
@@ -51,21 +54,23 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 			if (vm.winCheck()) {
 				//console.log(player);
 				if (player === 'X') {
-					vm.gameOver = vm.players[0]['name'];
-					vm.players[0].wins += 1;
-					vm.players[1].losses += 1;
+					vm.gameOver = vm.thisGame.p1;
+					vm.thisGame.p1_wins += 1;
+					vm.thisGame.p2_losses += 1;
 				} else {
-					vm.gameOver = vm.players[1]['name'];
-					vm.players[1].wins += 1;
-					vm.players[0].losses += 1;
+					vm.gameOver = vm.thisGame.p2;
+					vm.thisGame.p2_wins += 1;
+					vm.thisGame.p1_losses += 1;
 				}
+				vm.thisGame.$save();
 				vm.gameCount++;
 			}
 
 			if(vm.tie()) {
 				vm.isTied = true;
-				vm.players[0].ties += 1;
-				vm.players[1].ties += 1;
+				vm.thisGame.p1_ties += 1;
+				vm.thisGame.p2_ties += 1;
+				vm.thisGame.$save();
 				vm.gameCount++;
 			}
 		}
@@ -74,7 +79,7 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 
 	vm.winCheck = function() {
 		//console.log('checking for win');
-		var a = vm.gameboard;
+		var a = vm.thisGame.gameboard;
 		//console.log(a);
 		if ((a[1] === a[2] && a[2] === a[3]) && (a[1])) return true;
 		if ((a[4] === a[5] && a[5] === a[6]) && (a[4])) return true;
@@ -100,16 +105,16 @@ function GameCtrl(gameService, playersRef, gameBoard, $firebase, $location) {
 
 	vm.mainMenu = function() {
 
-		removePlayersRef = new Firebase('http://jcd.firebaseio.com/ttt/local/players');
+	/*	removePlayersRef = new Firebase('http://jcd.firebaseio.com/ttt/local/players');
 		//console.log(removePlayersRef);
 		removePlayersRef.remove();
 		
-		vm.gameboard.$destroy();
+		vm.gameboard.$destroy();*/
 
 		$location.path('/menu');
 	}
 
 	//start Game
-	vm.newGame();
+/*	vm.newGame();*/
 
 }

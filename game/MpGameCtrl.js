@@ -2,7 +2,7 @@ angular
 	.module('ttt')
 	.controller('MpGameCtrl', MpGameCtrl);
 
-function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
+function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef, $location) {
 	var vm = this;
 
 
@@ -10,7 +10,7 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
 	vm.loadGame.$loaded().then(function(){
 		vm.thisGame = vm.loadGame;
 		//vm.thisGame.$bindTo(vm, 'thisGame');
-		console.log(vm.thisGame);
+	//	console.log(vm.thisGame);
 		vm.me = vm.thisGame.me;
 		vm.mySymbol = vm.thisGame.mySymbol;
 	})
@@ -32,9 +32,9 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
 
 
 	vm.newGame = function() {
-		vm.turns = 0;
-		vm.gameOver = false;
-		vm.isTied = false;
+		vm.thisGame.turns = 0;
+		vm.thisGame.gameOver = false;
+		vm.thisGame.isTied = false;
 		vm.thisGame.gameOver = false;
 		if (vm.gameCount % 2 === 0) {
 			vm.isP1Turn = true;
@@ -53,52 +53,50 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
 	}
 
 	vm.playTurn = function(num) {
+
 		var player = '';
 
 		if(!(vm.thisGame.status === 'pending')) {
 			if(!(vm.thisGame.gameOver)) {
 				if(vm.thisGame[vm.me]) {
 					if(!vm.thisGame.gameboard[num]) {
-		/*		if (vm.isP1Turn) {
-					player = 'X';
-				} else {
-					player = 'O';
-				}*/
+
 			vm.thisGame.gameboard[num] = vm.mySymbol;
 			//vm.thisBoard.$save();
 			//console.log(vm.thisBoard);
-			vm.isP1Turn = !vm.isP1Turn;
-			vm.turns++;
+			vm.thisGame.isP1Turn = !vm.thisGame.isP1Turn;
+			vm.thisGame.turns++;
 			vm.thisGame['p1Turn'] = !vm.thisGame['p1Turn'];
 			vm.thisGame['p2Turn'] = !vm.thisGame['p2Turn'];
-			console.log(vm.thisGame['p1Turn']);
-			console.log(vm.thisGame['p2Turn']);
+			//console.log(vm.thisGame['p1Turn']);
+			//console.log(vm.thisGame['p2Turn']);
 			vm.thisGame.$save();
 			
 			if (vm.winCheck()) {
 				//console.log(player);
 				if (vm.mySymbol === 'X') {
 					vm.gameOver = vm.thisGame.p1;
-					//vm.players[0].wins += 1;
-					//vm.players[1].losses += 1;
+					vm.thisGame.p1_wins += 1;
+					vm.thisGame.p2_losses += 1;
 				} else {
 					vm.gameOver = vm.thisGame.p2;
-					//vm.players[1].wins += 1;
-					//vm.players[0].losses += 1;
+					vm.thisGame.p2_wins += 1;
+					vm.thisGame.p1_losses += 1;
 				}
 				vm.thisGame.gameOver = vm.gameOver;
+				vm.thisGame.gameCount++;
 				vm.thisGame.$save();
-				vm.gameCount++;
 			}
 
 			if(vm.tie()) {
-				vm.isTied = true;
-				//vm.players[0].ties += 1;
-				//vm.players[1].ties += 1;
-				vm.gameCount++;
+				vm.thisGame.isTied = true;
+				vm.thisGame.p1_ties += 1;
+				vm.thisGame.p2_ties += 1;
+				vm.thisGame.gameCount++;
+				vm.thisGame.$save();
 
 			}
-			console.log(vm.thisGame)
+		//	console.log(vm.thisGame)
 		}
 		}
 			}
@@ -121,7 +119,7 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
 	}
 
 	vm.tie = function() {
-		if (vm.turns === 9) {
+		if (vm.thisGame.turns === 9) {
 			if (!vm.winCheck()) return true;
 		}
 		return false;
@@ -132,9 +130,12 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef) {
 	}
 
 	vm.mainMenu = function() {
-		console.log('Go to main menu');
+	//	console.log('Go to main menu');
+		if (vm.thisGame.status !== 'Finished') {				
+			vm.thisGame.status = 'Finished';
+			vm.thisGame.$save();
+		}
+		$location.path('/menu');
 	}
-
-	
 
 }

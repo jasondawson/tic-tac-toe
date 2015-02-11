@@ -1,6 +1,9 @@
+(function() {
+
 angular
 	.module('ttt', ['firebase', 'ngRoute', 'formly'])
-	.config(config);
+	.config(config)
+	.run(run);
 
 function config($routeProvider) {
 	$routeProvider
@@ -17,17 +20,13 @@ function config($routeProvider) {
 				}
 			}
 		})
-		.when('/game/', {
+		.when('/game/:gameId', {
 			templateUrl: 'game/game.html',
 			controller: 'GameCtrl',
 			controllerAs: 'vm',
 			resolve: {
-				playersRef: function(gameService) {
-					return gameService.players();
-				},
-
-				gameBoard: function(gameService) {
-					return gameService.gameBoard();
+				localGameRef: function(gameService, $route) {
+					return gameService.getLocalGame($route.current.params.gameId)
 				}
 			}
 		})
@@ -74,15 +73,19 @@ function config($routeProvider) {
 
 }
 
-
-angular
-	.module('ttt')
-	.run(function($rootScope, $location, gameService) {
+function run($rootScope, $location, gameService) {
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		$rootScope.currentUser = gameService.getCurrentUser();
-			
+		//console.log($rootScope.currentUser);
+			//console.log($rootScope.currentUser);
+			if (!$rootScope.currentUser) {
+
+				//console.log('nobody logged in');
+				$location.path('/login');
+			}
 		
 		})
 
-	})
+	}
 
+})();

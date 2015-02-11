@@ -7,6 +7,8 @@ function HeaderCtrl($scope, $location, gameService, $rootScope) {
 	
 	vm.logout = function() {
 		gameService.logout().then(function() {
+			$rootScope.currentUser = {};
+			//console.log($rootScope.currentUser);
 			$location.path('/login');
 		})
 	}

@@ -14,7 +14,7 @@ function LobbyCtrl($scope, gameService, gamesRef, $location) {
 
 	vm.refreshGames = function() {
 		vm.games = vm.sync.$asArray();
-		console.log(vm.games);
+		//console.log(vm.games);
 	}
 
 	vm.joinGame = function(id) {

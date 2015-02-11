@@ -8,12 +8,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
 
    var currentUser = {};
 
-/*  this.setUser = function(obj) {
-      this.currentUser = obj;
-      console.log('set user');
-      console.log(this.currentUser);
-  }*/
-
   this.getCurrentUser = function() {
     return currentUser;
   }
@@ -48,15 +42,49 @@ function gameService($firebase, $q, usersRef, $rootScope) {
     return $firebase(new Firebase(firebaseUrl + '/games'))
   }
 
+  this.getLocalGame = function(gameId) {
+    return $firebase(new Firebase(firebaseUrl + '/local/' + gameId))
+  }
+
+  this.createLocalGame = function(p1_name, p2_name) {
+      var gameRef = new Firebase(firebaseUrl + '/local');
+
+      var localGameRef = gameRef.push({
+        p1        : p1_name,
+        p1_id     : 'X',
+        p1_wins   : 0,
+        p1_losses : 0,
+        p1_ties   : 0,
+        p2        : p2_name,
+        p2_id     : 'O',
+        p2_wins   : 0,
+        p2_losses : 0,
+        p2_ties   : 0
+      })
+
+       localGameRef.child('gameboard').set({
+          '0': 'created',
+          '1': null,
+          '2': null,
+          '3': null,
+          '4': null,
+          '5': null,
+          '6': null,
+          '7': null,
+          '8': null,
+          '9': null
+        })
+
+      //sync.$save();
+      var dfd = $q.defer();
+      console.log(localGameRef.key());
+      dfd.resolve(localGameRef.key());
+      return dfd.promise;
+  }
+
   this.createGame = function(name) {
       var gameRef = new Firebase(firebaseUrl + '/games');
-      //var sync = gameRef.$asArray();
-     // var userRef = new Firebase(firebaseUrl + '/users')
-    /*  var auth = gameRef.getAuth().uid.replace('simplelogin:','');
-      console.log(auth);*/
-      //var userName = userRef.child(auth).child('name').value();
-      //console.log(userName);
-      //console.log(auth);
+
       var p1 = currentUser.name;
       var newGameRef = gameRef.push({
         me: 'p1Turn',
@@ -69,7 +97,11 @@ function gameService($firebase, $q, usersRef, $rootScope) {
         p1_losses: currentUser.losses,
         p1_ties: currentUser.ties,
         p2: 'Waiting for Player',
-        gameOver: false
+        gameOver: false,
+        isTied: false,
+        isP1Turn: true,
+        gameCount: 0,
+        turns: 0
       })
 
        newGameRef.child('gameboard').set({
@@ -197,6 +229,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
     var dfd = $q.defer();
     
     ref.unauth();
+    currentUser = {}
     dfd.resolve(null);
 
     return dfd.promise;

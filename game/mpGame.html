@@ -1,8 +1,8 @@
 <div>
-
-	p1:{{vm.thisGame.p1Turn}}
-	p2:{{vm.thisGame.p2Turn}}
-	mySymbol: {{vm.mySymbol}}
+<div class="player-left" ng-show="vm.thisGame.status === 'Finished'">
+<label class="align-center" for="return-to-menu">The other player has left the game :( </label>
+<button id="return-to-menu" class="btn btn-default btn-center" ng-click="vm.mainMenu()">Return to Menu</button>
+</div>
 <div class="gameboard-wrapper">
 <button class="btn btn-default clear" ng-click="vm.startOver()">New Game</button>
 <button class="btn btn-default" ng-click="vm.mainMenu()">Main Menu</button>
@@ -18,16 +18,17 @@ Player 2: {{vm.thisGame.p2}}
 <hr>
 <p ng-hide="vm.thisGame.status === 'pending'">Wins: {{vm.thisGame.p2_wins}} Losses: {{vm.thisGame.p2_losses}} Ties: {{vm.thisGame.p2_ties}} </p>
 </div>
-<div class="player-display player-display-turns pull-left clear" ng-show="!vm.thisGame.gameOver && ((vm.thisGame[vm.me] && (!vm.gameOver && !vm.isTied)) && vm.thisGame.status !== 'pending')">
+<div class="player-display player-display-turns pull-left clear" ng-show="!vm.thisGame.gameOver && ((vm.thisGame[vm.me] && (!vm.thisGame.gameOver && !vm.thisGame.isTied)) && vm.thisGame.status !== 'pending')">
 Your Turn!
 </div>
-<!-- <div class="player-display player-display-turns pull-left clear" ng-show="(!vm.isP1Turn && (!vm.gameOver && !vm.isTied)) && vm.thisGame.status !== 'pending'">
-{{vm.thisGame.p2}}'s Turn!
-</div> -->
+<div class="player-display player-display-turns pull-left clear" ng-show="!vm.thisGame.gameOver && ((!vm.thisGame[vm.me] && (!vm.thisGame.gameOver && !vm.thisGame.isTied)) && vm.thisGame.status !== 'pending')">
+Opponent's turn!
+</div>
+
 <div class="message pull-left clear" ng-show="vm.thisGame.gameOver">
 		{{vm.thisGame.gameOver}} wins!
 	</div>
-	<div class="message pull-left clear" ng-show="vm.isTied">
+	<div class="message pull-left clear" ng-show="vm.thisGame.isTied">
 		Tie!
 	</div>
 
