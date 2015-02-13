@@ -75,7 +75,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
           '9': null
         })
 
-      //sync.$save();
       var dfd = $q.defer();
       console.log(localGameRef.key());
       dfd.resolve(localGameRef.key());
@@ -117,7 +116,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
           '9': null
         })
 
-      //sync.$save();
       var dfd = $q.defer();
       dfd.resolve(newGameRef.key());
       return dfd.promise;
@@ -125,13 +123,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
 
     this.joinGame = function(gameId) {
       var gameRef = new Firebase(firebaseUrl + '/games/' + gameId);
-      //var sync = gameRef.$asArray();
-     // var userRef = new Firebase(firebaseUrl + '/users')
-    /*  var auth = gameRef.getAuth().uid.replace('simplelogin:','');
-      console.log(auth);*/
-      //var userName = userRef.child(auth).child('name').value();
-      //console.log(userName);
-      //console.log(auth);
+
       var p2 = currentUser.name;
       
       gameRef.update({
@@ -144,8 +136,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
         p2_ties: currentUser.ties
       })
 
-      
-      //sync.$save();
       var dfd = $q.defer();
       dfd.resolve(gameId);
       return dfd.promise;
@@ -158,7 +148,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
 	}
 
 	this.registerUser = function(email, password, name) {
-	/*console.log('Register with: Email: ' + vm.loginEmail + ' and password: ' + Boolean(vm.loginPassword) );*/
+
 	var ref = new Firebase("https://jcd.firebaseio.com/");
 	var dfd = $q.defer();
 
@@ -181,8 +171,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
                     authData.ties = 0;
                     authData.timestamp = new Date().toISOString();
                     ref.child('ttt').child('users').child(authData.uid.replace('simplelogin:', '')).set(authData);
-                    //console.log(authData.uid.replace('simplelogin:', '') + ' ' + authData.name);
-                   /* cb(authData.uid.replace('simplelogin:', ''), authData.name);*/
+                 
                   dfd.resolve(null);
                 }
       })
@@ -206,16 +195,12 @@ function gameService($firebase, $q, usersRef, $rootScope) {
     		console.log("Login Failed!", error);
     		dfd.reject(error);
   		} else if (authData) {
-           // console.log(authData);
             var usersRef = new Firebase('https://jcd.firebaseio.com/ttt/users');
             var currentId = usersRef.getAuth().uid.replace('simplelogin:','');
-            //console.log(currentId);
+  
             var userRef = $firebase(new Firebase('https://jcd.firebaseio.com/ttt/users/' + currentId));
             currentUser = userRef.$asObject();
-            //console.log(currentUser);
-            
-            /*var userRef = usersRef.child$asArray();
-            console.log(userRef);*/
+ 
             dfd.resolve(currentUser);  
 
             

@@ -30,13 +30,11 @@ function GameCtrl(gameService, $firebase, $location, localGameRef) {
 			vm.thisGame.gameboard[i] = null;
 		};
 		vm.thisGame.$save();
-		//console.log(vm.gameboard);
 	}
 
 	vm.playTurn = function(num) {
 		var player = '';
-		/*console.log(num);
-		console.log(vm.gameboard[num]);*/
+
 		if (!(vm.gameOver)) {
 			if(!(vm.thisGame.gameboard[num])) {
 				if (vm.isP1Turn) {
@@ -48,11 +46,11 @@ function GameCtrl(gameService, $firebase, $location, localGameRef) {
 			vm.thisGame.$save();
 			vm.isP1Turn = !vm.isP1Turn;
 			vm.turns++;
-			//console.log(vm.turns);
+
 
 			}
 			if (vm.winCheck()) {
-				//console.log(player);
+
 				if (player === 'X') {
 					vm.gameOver = vm.thisGame.p1;
 					vm.thisGame.p1_wins += 1;
@@ -78,9 +76,9 @@ function GameCtrl(gameService, $firebase, $location, localGameRef) {
 
 
 	vm.winCheck = function() {
-		//console.log('checking for win');
+
 		var a = vm.thisGame.gameboard;
-		//console.log(a);
+
 		if ((a[1] === a[2] && a[2] === a[3]) && (a[1])) return true;
 		if ((a[4] === a[5] && a[5] === a[6]) && (a[4])) return true;
 		if ((a[7] === a[8] && a[8] === a[9]) && (a[7])) return true;
@@ -105,16 +103,7 @@ function GameCtrl(gameService, $firebase, $location, localGameRef) {
 
 	vm.mainMenu = function() {
 
-	/*	removePlayersRef = new Firebase('http://jcd.firebaseio.com/ttt/local/players');
-		//console.log(removePlayersRef);
-		removePlayersRef.remove();
-		
-		vm.gameboard.$destroy();*/
-
 		$location.path('/menu');
 	}
-
-	//start Game
-/*	vm.newGame();*/
 
 }

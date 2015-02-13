@@ -76,11 +76,9 @@ function config($routeProvider) {
 function run($rootScope, $location, gameService) {
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		$rootScope.currentUser = gameService.getCurrentUser();
-		//console.log($rootScope.currentUser);
-			//console.log($rootScope.currentUser);
+
 			if (!$rootScope.currentUser) {
 
-				//console.log('nobody logged in');
 				$location.path('/login');
 			}
 		
