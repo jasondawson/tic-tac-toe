@@ -12,20 +12,20 @@
 			<div class="user-stats pull-left" >
 			</div>
 		<div class="stats pull-right flex">
-			<div ng-hide="!$root.currentUser.name">
+			<div ng-cloak ng-hide="!$root.currentUser.name">
 			Welcome, {{$root.currentUser.name}}!
 			</div> 
-			<button class="btn btn-default btn-logout pull-right" ng-hide="!$root.currentUser.name" ng-click="vm.logout()">Log Out</button>
+			<button ng-cloak class="btn btn-default btn-logout pull-right" ng-hide="!$root.currentUser.name" ng-click="vm.logout()">Log Out</button>
 		</div>
 	</header>
 	</div>
 <div>
 <ng-view></ng-view>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.min.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
 <script src="bower_components/angular-formly/dist/formly.min.js"></script>

@@ -303,3 +303,7 @@ input.ng-invalid.ng-dirty {
 .align-center {
 	text-align: center;
 }
+
+.ng-cloak {
+  display: none !important;
+}
