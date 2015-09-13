@@ -4,6 +4,7 @@ An Angular app that uses Firebase for data storage and simple authentication.
 
 -------------
 
+When making this app, there were a few key features that I wanted. I've described how I did a couple of them below.
 
 I wanted the ability to show user details (e.g. 'Welcome, Username!'). To accomplish this, listen to route change events and place the user object on the rootscope.
 
@@ -25,7 +26,7 @@ This can then be accessed via $root in the html
 <div>Welcome, {{$root.currentUser.name}}</div>
 ```
 
-I used commonjs-require to load my config file which looks like this:
+I wanted to be able to bring in my Firebase url from an external config file. I tried a few different angular ways to do this (e.g. module.constant()) but ultimately I used commonjs-require to load my config file which looks like this:
 
 ```
 require.register('config', function(exports, require, module){
