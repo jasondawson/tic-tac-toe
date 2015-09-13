@@ -1,9 +1,22 @@
 (function() {
 
 angular
-	.module('ttt', ['firebase', 'ngRoute', 'formly'])
+	.module('ttt', ['firebase', 'ngRoute'])
 	.config(config)
 	.run(run);
+
+	function run($rootScope, $location, gameService) {
+
+	$rootScope.$on('$routeChangeStart', function(event, next, current) {
+		$rootScope.currentUser = gameService.getCurrentUser();;
+			if (!$rootScope.currentUser) {
+
+				$location.path('/login');
+			}
+
+		})
+
+	}
 
 function config($routeProvider) {
 	$routeProvider
@@ -41,18 +54,12 @@ function config($routeProvider) {
 				mpBoardRef: function(gameService, $route) {
 					return gameService.getMpBoard($route.current.params.gameId);
 				}
-	
 			}
 		})
 		.when('/login', {
 			templateUrl: '/game/login.html',
 			controller: 'LoginCtrl',
-			controllerAs: 'vm',
-			resolve: {
-				usersRef: function(gameService) {
-					return gameService.getUsers();
-				}
-			}
+			controllerAs: 'vm'
 		})
 		.when('/lobby', {
 			templateUrl: 'game/lobby.html',
@@ -70,20 +77,6 @@ function config($routeProvider) {
 			controllerAs: 'vm'
 		})
 		.otherwise('/login');
-
 }
-
-function run($rootScope, $location, gameService) {
-	$rootScope.$on('$routeChangeStart', function(event, next, current) {
-		$rootScope.currentUser = gameService.getCurrentUser();
-
-			if (!$rootScope.currentUser) {
-
-				$location.path('/login');
-			}
-		
-		})
-
-	}
 
 })();
