@@ -7,21 +7,29 @@
 <div class="display-wrapper">
 <div class="player-display pull-left">
 Player 1: {{vm.thisGame.p1}}
-<hr>
-<p>Wins: {{vm.thisGame.p1_wins}} Losses: {{vm.thisGame.p1_losses}} Ties: {{vm.thisGame.p1_ties}} </p>
+	<div class="small-screen-hide">
+		<hr>
+		<p>Wins: {{vm.thisGame.p1_wins}}</p>
+		<p>Losses: {{vm.thisGame.p1_losses}}</p>
+		<p> Ties: {{vm.thisGame.p1_ties}} </p>
+	</div>
 </div>
 <div class="player-display pull-left clear">
 Player 2: {{vm.thisGame.p2}}
-<hr>
-<p>Wins: {{vm.thisGame.p2_wins}} Losses: {{vm.thisGame.p2_losses}} Ties: {{vm.thisGame.p2_ties}} </p>
+	<div class="small-screen-hide">
+		<hr>
+		<p>Wins: {{vm.thisGame.p2_wins}}</p>
+		<p> Losses: {{vm.thisGame.p2_losses}}</p>
+		<p> Ties: {{vm.thisGame.p2_ties}} </p>
+	</div>
 </div>
-<div class="player-display player-display-turns pull-left clear" ng-show="vm.isP1Turn && (!vm.gameOver && !vm.isTied)">
+<div class="player-display player-display-turns clear" ng-show="vm.isP1Turn && (!vm.gameOver && !vm.isTied)">
 {{vm.thisGame.p1}}'s Turn!
 </div>
-<div class="player-display player-display-turns pull-left clear" ng-show="!vm.isP1Turn && (!vm.gameOver && !vm.isTied)">
+<div class="player-display player-display-turns clear" ng-show="!vm.isP1Turn && (!vm.gameOver && !vm.isTied)">
 {{vm.thisGame.p2}}'s Turn!
 </div>
-<div class="message pull-left clear" ng-show="vm.gameOver">
+<div class="message player-display-turns pull-left clear" ng-show="vm.gameOver">
 		{{vm.gameOver}} wins!
 	</div>
 	<div class="message pull-left clear" ng-show="vm.isTied">
@@ -29,7 +37,7 @@ Player 2: {{vm.thisGame.p2}}
 	</div>
 
 <div class="gameboard gameboard-col">
-	
+
 	<div class="gameboard-row">
 		<div class="tile" ng-click="vm.playTurn(1)">{{vm.thisGame.gameboard[1]}}
 		</div>
@@ -54,7 +62,7 @@ Player 2: {{vm.thisGame.p2}}
 		<div class="tile" ng-click="vm.playTurn(9)">{{vm.thisGame.gameboard[9]}}
 		</div>
 	</div>
-	
+
 </div>
 </div>
 
