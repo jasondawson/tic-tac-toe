@@ -1,3 +1,5 @@
+(function() {
+
 angular
 	.module('ttt')
 	.controller('GameCtrl', GameCtrl);
@@ -107,3 +109,5 @@ function GameCtrl(gameService, $firebase, $location, localGameRef) {
 	}
 
 }
+
+})();

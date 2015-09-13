@@ -1,3 +1,5 @@
+(function() {
+
 angular
 	.module('ttt')
 	.controller('MpGameCtrl', MpGameCtrl);
@@ -59,7 +61,7 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef, $location) 
 			vm.thisGame['p2Turn'] = !vm.thisGame['p2Turn'];
 
 			vm.thisGame.$save();
-			
+
 			if (vm.winCheck()) {
 
 				if (vm.mySymbol === 'X') {
@@ -92,9 +94,9 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef, $location) 
 	}
 
 	vm.winCheck = function() {
-	
+
 		var a = vm.thisGame.gameboard;
-	
+
 		if ((a[1] === a[2] && a[2] === a[3]) && (a[1])) return true;
 		if ((a[4] === a[5] && a[5] === a[6]) && (a[4])) return true;
 		if ((a[7] === a[8] && a[8] === a[9]) && (a[7])) return true;
@@ -119,7 +121,7 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef, $location) 
 
 	vm.mainMenu = function() {
 
-		if (vm.thisGame.status !== 'Finished') {				
+		if (vm.thisGame.status !== 'Finished') {
 			vm.thisGame.status = 'Finished';
 			vm.thisGame.$save();
 		}
@@ -127,3 +129,5 @@ function MpGameCtrl ($firebase, $routeParams, mpGameRef, mpBoardRef, $location) 
 	}
 
 }
+
+})();

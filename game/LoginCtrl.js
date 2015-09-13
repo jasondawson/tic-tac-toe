@@ -1,3 +1,5 @@
+(function() {
+
 angular
 	.module('ttt')
 	.controller('LoginCtrl', LoginCtrl);
@@ -17,17 +19,12 @@ function LoginCtrl ($scope, gameService, $location) {
 
 	vm.login = function() {
 		gameService.loginUser(vm.loginEmail, vm.loginPassword).then(function(res) {
-			//gameService.setUser(res);
-			//console.log(res + 'logged in');
+
 			$location.path('/menu');
 
 		}, function(err) {
 			console.log(err);
 		})
-		/*	if (res === 'Success') {
-				$location.path('/localMP');
-			}
-		})*/
 	}
 
 	vm.register = function() {
@@ -38,7 +35,7 @@ function LoginCtrl ($scope, gameService, $location) {
 			vm.registerName = '';
 			vm.registerShow = false;
 			vm.loginShow = true;
-		    console.log("User created successfully");
+		    // console.log("User created successfully");
 		} else {
 			console.log("Error creating user:" + res);
 			vm.errMsg = res;
@@ -46,8 +43,6 @@ function LoginCtrl ($scope, gameService, $location) {
 		})
 	}
 
-	/*vm.setUser = function(id, name) {
-		gameService.setUser(id, name);
-	}*/
-
 }
+
+})();

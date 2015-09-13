@@ -1,3 +1,5 @@
+(function() {
+
 angular
 	.module('ttt')
 	.controller('MenuCtrl', MenuCtrl);
@@ -13,3 +15,5 @@ function MenuCtrl($location) {
 		$location.path('/lobby');
 	}
 }
+
+})();
