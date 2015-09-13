@@ -1,53 +1,54 @@
-angular
+(function() {
+
+  angular
 	.module('ttt')
-	.service('gameService', gameService);
+  .service('gameService', ['$firebase', '$q', gameService])
 
-gameService.$inject = ['$firebase', '$q'];
 
-function gameService($firebase, $q, usersRef, $rootScope) {
+function gameService($firebase, $q, $rootScope) {
 
    var currentUser = {};
 
   this.getCurrentUser = function() {
     return currentUser;
   }
-
-	var firebaseUrl = 'https://jcd.firebaseio.com/ttt';
+  var config = require('config');
+	var firebaseGameUrl = config.firebaseGameUrl;
 
   this.getGames = function() {
-    return $firebase(new Firebase(firebaseUrl + '/games'))
+    return $firebase(new Firebase(firebaseGameUrl + '/games'))
   }
 
   this.getMpGame = function(gameId) {
-    return $firebase(new Firebase('http://jcd.firebaseio.com/ttt/games/' + gameId))
+    return $firebase(new Firebase(firebaseGameUrl + '/games/' + gameId));
   }
 
   this.getMpBoard = function(gameId) {
-    return $firebase(new Firebase('http://jcd.firebaseio.com/ttt/games/' + gameId + '/gameboard'))
+    return $firebase(new Firebase(firebaseGameUrl+ '/games/' + gameId + '/gameboard'));
   }
 
 	this.getUsers = function() {
-		return $firebase(new Firebase(firebaseUrl + '/users'))
+		return $firebase(new Firebase(firebaseGameUrl + '/users'))
 	}
 
 	this.players = function() {
-		return $firebase(new Firebase(firebaseUrl + '/local/players'))
+		return $firebase(new Firebase(firebaseGameUrl + '/local/players'))
 	}
 
 	this.gameBoard = function() {
-		return $firebase(new Firebase(firebaseUrl + '/local/gameBoard'))
+		return $firebase(new Firebase(firebaseGameUrl + '/local/gameBoard'))
 	}
 
   this.mpGameBoard = function() {
-    return $firebase(new Firebase(firebaseUrl + '/games'))
+    return $firebase(new Firebase(firebaseGameUrl + '/games'))
   }
 
   this.getLocalGame = function(gameId) {
-    return $firebase(new Firebase(firebaseUrl + '/local/' + gameId))
+    return $firebase(new Firebase(firebaseGameUrl + '/local/' + gameId))
   }
 
   this.createLocalGame = function(p1_name, p2_name) {
-      var gameRef = new Firebase(firebaseUrl + '/local');
+      var gameRef = new Firebase(firebaseGameUrl + '/local');
 
       var localGameRef = gameRef.push({
         p1        : p1_name,
@@ -76,13 +77,12 @@ function gameService($firebase, $q, usersRef, $rootScope) {
         })
 
       var dfd = $q.defer();
-      console.log(localGameRef.key());
       dfd.resolve(localGameRef.key());
       return dfd.promise;
   }
 
   this.createGame = function(name) {
-      var gameRef = new Firebase(firebaseUrl + '/games');
+      var gameRef = new Firebase(firebaseGameUrl + '/games');
 
       var p1 = currentUser.name;
       var newGameRef = gameRef.push({
@@ -122,10 +122,10 @@ function gameService($firebase, $q, usersRef, $rootScope) {
   }
 
     this.joinGame = function(gameId) {
-      var gameRef = new Firebase(firebaseUrl + '/games/' + gameId);
+      var gameRef = new Firebase(firebaseGameUrl + '/games/' + gameId);
 
       var p2 = currentUser.name;
-      
+
       gameRef.update({
         me: 'p2Turn',
         mySymbol: 'O',
@@ -144,12 +144,15 @@ function gameService($firebase, $q, usersRef, $rootScope) {
 
 
 	this.stats = function() {
-		return $firebase(new Firebase(firebaseUrl + '/stats'))
+		return $firebase(new Firebase(firebaseGameUrl + '/stats'))
 	}
+
+// user registration and authentication
+var firebaseBaseUrl = config.firebaseBaseUrl;
 
 	this.registerUser = function(email, password, name) {
 
-	var ref = new Firebase("https://jcd.firebaseio.com/");
+	var ref = new Firebase(firebaseBaseUrl);
 	var dfd = $q.defer();
 
 	ref.createUser({
@@ -171,12 +174,12 @@ function gameService($firebase, $q, usersRef, $rootScope) {
                     authData.ties = 0;
                     authData.timestamp = new Date().toISOString();
                     ref.child('ttt').child('users').child(authData.uid.replace('simplelogin:', '')).set(authData);
-                 
+
                   dfd.resolve(null);
                 }
       })
-    } else {   
-      
+    } else {
+
 	     	dfd.reject(error.message);
 		}
 	});
@@ -184,7 +187,7 @@ function gameService($firebase, $q, usersRef, $rootScope) {
 	}
 
 	this.loginUser = function(email, password) {
-		var ref = new Firebase("https://jcd.firebaseio.com");
+		var ref = new Firebase(firebaseBaseUrl);
 		var dfd = $q.defer();
     var loggedInId;
 		ref.authWithPassword({
@@ -195,24 +198,24 @@ function gameService($firebase, $q, usersRef, $rootScope) {
     		console.log("Login Failed!", error);
     		dfd.reject(error);
   		} else if (authData) {
-            var usersRef = new Firebase('https://jcd.firebaseio.com/ttt/users');
+            var usersRef = new Firebase(firebaseGameUrl + '/users');
             var currentId = usersRef.getAuth().uid.replace('simplelogin:','');
-  
-            var userRef = $firebase(new Firebase('https://jcd.firebaseio.com/ttt/users/' + currentId));
-            currentUser = userRef.$asObject();
- 
-            dfd.resolve(currentUser);  
 
-            
+            var userRef = $firebase(new Firebase(firebaseGameUrl + '/users/' + currentId));
+            currentUser = userRef.$asObject();
+
+            dfd.resolve(currentUser);
+
+
   		}
 		});
 		return dfd.promise;
 	}
 
   this.logout = function() {
-    var ref = new Firebase(firebaseUrl);
+    var ref = new Firebase(firebaseBaseUrl);
     var dfd = $q.defer();
-    
+
     ref.unauth();
     currentUser = {}
     dfd.resolve(null);
@@ -221,3 +224,6 @@ function gameService($firebase, $q, usersRef, $rootScope) {
   }
 
 }
+
+})();
+
